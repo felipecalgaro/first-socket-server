@@ -13,10 +13,13 @@ const io = new Server<
 })
 
 io.on('connection', socket => {
-  console.log(socket.id);
+  socket.on("send-message", message => {
+    io.emit("receive-message", message)
+  })
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on('join-room', room => {
+    socket.join(room)
+    io.emit('joined-room', room)
   })
 })
 

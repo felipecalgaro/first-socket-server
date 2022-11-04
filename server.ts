@@ -13,13 +13,15 @@ const io = new Server<
 })
 
 io.on('connection', socket => {
-  socket.on("send-message", message => {
-    io.emit("receive-message", message)
+  socket.on("send-message", (message, room) => {
+    socket.to(room).emit("receive-message", message)
   })
 
   socket.on('join-room', room => {
     socket.join(room)
-    io.emit('joined-room', room)
+    socket.to(room).emit('joined-room', room)
   })
 })
 
+// primeira vez q entra da certo, reload e n da mais, mas da pro outro
+// tlvz seja funcionalidade
